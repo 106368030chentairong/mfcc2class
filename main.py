@@ -7,16 +7,17 @@
 # @package:  
 # @Input:    
 ########################################################################################
+import sys
 from readWAV import *
-
 
 def main():
     
     WAVs ,labels ,listdir = read_WAVs_labels("Berlin Database WAV/")
-    for x in range(len(WAVs)):
+    for x in range(2):
         log_S = Mel_power_spectrongam(16000,WAVs[x])
-        print(log_S.shape)
-    plt_data(log_S,labels[x])
+        mfcc,delta2_mfcc=MFCC(log_S)
+        # print(mfcc.shape)
+    plt_data(mfcc,labels[1])
     print("WAV amount :",len(WAVs))
 
 if __name__ == '__main__':

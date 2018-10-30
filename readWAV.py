@@ -19,13 +19,14 @@ import librosa.display
 images =[]
 labels = []
 listdir = []
-list_name=["anger","boredom","disgust","anxiety/fear","happiness","sadness","neutral"]
+listshape = []
+labels_to_keep = ["anger","boredom","disgust","anxiety/fear","happiness","sadness","neutral"]
 
 
 def plt_data(data,Label):
     plt.figure(figsize=(12, 4))
     librosa.display.specshow(data, x_axis='time', y_axis='mel')
-    plt.title('Label :' + list_name[Label])
+    plt.title('Label :' + labels_to_keep [Label])
     plt.colorbar(format='%+02.0f dB')
     plt.show()
 
@@ -52,9 +53,13 @@ def read_WAVs_labels(path,i=0):
             read_WAVs_labels(abs_path,i)                     # read_images_labels(C:\\XXX\XXX\ + train\XXX\)
         else:  
             if file.endswith('.wav'):
-                sample_rate, samples = wavfile.read(abs_path)  
-                images.append(samples)                         
-                labels.append(i-1)                            
+                sample_rate, samples = wavfile.read(abs_path)
+                
+                # listshape.append(np.pad(samples, (0,160000), 'constant').shape)
+                listshape.append(samples.shape)
+                images.append(np.pad(samples, (0,160000), 'constant'))
+                labels.append(i-1)
+    print(listshape)
     return images ,labels ,listdir
 
 if __name__ == '__main__':
